@@ -1,9 +1,19 @@
 #!/bin/bash
 
-COMMUNITY="YOUR_COMMUNITY"
-IBMC_IP="YOUR_IBMC_IP"
+COMMUNITY="Your iBMC COMMUNITY value"
+IBMC_IP="Your iBMC IP address"
 
-CPU_TEMP="$(sensors -Aj coretemp-isa-* | jq '.[][] | to_entries[] | select(.key | endswith("input")) | .value' | sort -rn | head -n1)"
+#SNMP get CPU Temperature, and support 2 phy CPUs.
+#The SNMP return value neet to 1/10 is the Celsius.
+CPU1_TEMP_RAW="$(snmpget -v2c -Oq -Ov -c $COMMUNITY $IBMC_IP iso.3.6.1.4.1.2011.2.235.1.1.26.50.1.3.2)"
+CPU2_TEMP_RAW="$(snmpget -v2c -Oq -Ov -c $COMMUNITY $IBMC_IP iso.3.6.1.4.1.2011.2.235.1.1.26.50.1.3.3)"
+CPU1_TEMP=$(echo "scale=0; $CPU1_TEMP_RAW / 10" | bc)
+CPU2_TEMP=$(echo "scale=0; $CPU2_TEMP_RAW / 10" | bc)
+if (( $(echo "$CPU1_TEMP >= $CPU2_TEMP" | bc -l) )); then
+    CPU_TEMP=$CPU1_TEMP
+else
+    CPU_TEMP=$CPU2_TEMP
+fi
 
 CURRENT_SPEED="$(snmpget -Oq -Ov -v2c -c $COMMUNITY $IBMC_IP .1.3.6.1.4.1.2011.2.235.1.1.8.2.0)"
 CURRENT_MODE="$(snmpget -Oq -Ov -v2c -c $COMMUNITY $IBMC_IP .1.3.6.1.4.1.2011.2.235.1.1.8.1.0 | awk -F'[^0-9]+' '{ print $2 }')"
