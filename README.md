@@ -2,6 +2,7 @@
 
 This repository contains an script and a SystemD service to periodically monitor
 CPU temperature and adjust fans.
+Support 2 CPUs.
 
 ## How to Install
 
