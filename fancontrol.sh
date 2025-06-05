@@ -37,13 +37,13 @@ set_manual_mode() {
   fi
 }
 
-if [[ $CPU_TEMP > 70 ]]; then
+if [[ $CPU_TEMP -gt 70 ]]; then
     set_auto_mode
-elif [[ $CPU_TEMP > 65 ]]; then
+elif [[ $CPU_TEMP -gt 65 ]]; then
     set_manual_mode 35
-elif [[ $CPU_TEMP > 55 ]]; then
+elif [[ $CPU_TEMP -gt 55 ]]; then
     set_manual_mode 30
-elif [[ $CPU_TEMP > 45 ]]; then
+elif [[ $CPU_TEMP -gt 45 ]]; then
     set_manual_mode 25
 else
     set_manual_mode 20
