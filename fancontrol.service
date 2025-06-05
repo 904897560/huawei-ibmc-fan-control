@@ -2,9 +2,10 @@
 Description=Huawei iBMC Fan Speed Controller
 
 [Service]
-ExecStart=/bin/bash {TARGETDIR}/fancontrol.sh
-Restart=always
-RestartSec=10s
+Type=oneshot
+ExecStart=/bin/bash /opt/fancontrol/fancontrol.sh
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=default.target
