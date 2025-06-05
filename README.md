@@ -29,4 +29,4 @@ iBMC configuration and change it. It is a password.
 
 ## Systems tested with:
 
-- Huawei RH2288H v3
+- Huawei RH2288H v5
