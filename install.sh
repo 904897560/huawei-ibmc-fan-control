@@ -27,15 +27,16 @@ cp fancontrol.sh "$TARGETDIR/"
 
 echo "*** Creating, (re)starting and enabling SystemD service..."
 cp fancontrol.service /etc/systemd/system/fancontrol.service
+cp fancontrol.timer /etc/systemd/system/fancontrol.timer
 sed -i "s#{TARGETDIR}#$TARGETDIR#g" /etc/systemd/system/fancontrol.service
 systemctl daemon-reload
-systemctl restart fancontrol
-systemctl enable fancontrol
+systemctl enable fancontrol.timer
 
 echo "*** Waiting for the service to start..."
 sleep 3
 
 echo -e "*** All done! Check the service's output below:\n"
-systemctl status fancontrol
+systemctl status fancontrol.service
+systemctl status fancontrol.timer
 
 set +e
