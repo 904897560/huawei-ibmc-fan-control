@@ -1,0 +1,10 @@
+[Unit]
+Description=Run fancontrol every 10 seconds
+
+[Timer]
+OnBootSec=10s
+OnUnitActiveSec=10s
+Unit=fancontrol.service
+
+[Install]
+WantedBy=timers.target
