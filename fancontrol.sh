@@ -9,6 +9,7 @@ CPU1_TEMP_RAW="$(snmpget -v2c -Oq -Ov -c $COMMUNITY $IBMC_IP iso.3.6.1.4.1.2011.
 CPU2_TEMP_RAW="$(snmpget -v2c -Oq -Ov -c $COMMUNITY $IBMC_IP iso.3.6.1.4.1.2011.2.235.1.1.26.50.1.3.3)"
 CPU1_TEMP=$(echo "scale=0; $CPU1_TEMP_RAW / 10" | bc)
 CPU2_TEMP=$(echo "scale=0; $CPU2_TEMP_RAW / 10" | bc)
+echo "Now CPU1-Temp: ${CPU1_TEMP} and CPU2-Temp: ${CPU2_TEMP} !"
 if (( $(echo "$CPU1_TEMP >= $CPU2_TEMP" | bc -l) )); then
     CPU_TEMP=$CPU1_TEMP
 else
